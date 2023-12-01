@@ -8,10 +8,43 @@ import (
     "runtime"
     "strings"
 )
+////////////
+//Commands//
+////////////
+// Whoxyrm
+// findomain
+// assetfinder
+// nmap
+// masscan
+// httpx
+// cewl
+// fuff or similar
+
+// Take CLI Args of files containing domains and business names
+
+// Function to pause the script. Ask if the found URLs are good and okay to continue. (y/n) If we say no then it will wait till we adjust the file and say to continue(c)
+
+// Main loop (Casting a big net)
+
+// Zoning in round 1
+
+// Zoning in round 2
+
+// Function to parse ASNs
+
+// Function to parse IPs and IP Ranges
+
+// Function to parse status codes
+
+// Function to track progress % or active run time
 
 func main() {
     runCommand(currentFunction(), "ping", "-c1", "google.commm")
 }
+
+////////////////////
+//Calling Commands//
+////////////////////
 
 func commandErrorMessage(stderr bytes.Buffer, program string) string {
     message := string(stderr.Bytes())
