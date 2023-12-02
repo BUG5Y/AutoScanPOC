@@ -7,24 +7,72 @@ import (
     "os/exec"
     "runtime"
     "strings"
+	"github.com/urfave/cli"
 )
-////////////
-//Commands//
-////////////
-// Whoxyrm
-// findomain
-// assetfinder
-// nmap
-// masscan
-// httpx
-// cewl
-// fuff or similar
 
-// Take CLI Args of files containing domains and business names
+func main() {
+	app := cli.NewApp()
+	app.Name = "AutoScan"
+	app.Usage = "A simple CLI application"
 
-// Function to pause the script. Ask if the found URLs are good and okay to continue. (y/n) If we say no then it will wait till we adjust the file and say to continue(c)
+	// Define flags
+	businessFlag := cli.StringFlag{
+		Name:  "b",
+		Usage: "Business argument (mandatory)",
+	}
 
-// Main loop (Casting a big net)
+	domainFlag := cli.StringFlag{
+		Name:  "d",
+		Usage: "Domain argument (mandatory)",
+	}
+
+	strictFlag := cli.BoolFlag{
+		Name:  "s",
+		Usage: "Strict argument (optional)",
+	}
+
+	helpFlag := cli.BoolFlag{
+		Name:  "h",
+		Usage: "Help argument (optional)",
+	}
+
+	// Set up the CLI command
+	app.Flags = []cli.Flag{&businessFlag, &domainFlag, &strictFlag, &helpFlag}
+
+	app.Action = func(c *cli.Context) error {
+		// Check for mandatory arguments
+		if !c.IsSet("b") || !c.IsSet("d") {
+			fmt.Println("Error: Business (-b) and Domain (-d) are mandatory arguments")
+			return nil
+		}
+
+		// Retrieve values
+		business := c.String("b")
+		domain := c.String("d")
+		strict := c.Bool("s")
+
+		// Your application logic here
+		bigNet
+		webEnum
+		ipEnum
+
+		// Print values for demonstration
+		fmt.Printf("Business: %s\n", business)
+		fmt.Printf("Domain: %s\n", domain)
+		fmt.Printf("Strict: %t\n", strict)
+
+		return nil
+	}
+
+	err := app.Run(os.Args)
+	if err != nil {
+		fmt.Println(err)
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Main logic
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 func bigNet() {
 // Start with a list of known URLs & Company names
     for i in company names:
@@ -77,36 +125,61 @@ func ipEnum () {
         compare URLs to those that we have. Add unique URLs to a file and perform subdomain enumeration on those URLs.
 }
 
-// Function to parse ASNs
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Helpers and Parsers
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// Parse ASNs
 func parseASN (){
 }
-// Function to parse IPs and IP Ranges
+// Parse IPs and IP Ranges
 func parseIP (){
 }
 
 func parseRange (){
 }
 
-// Function to parse status codes
+// Parse status codes
 func parseStatus (){
 }
 
-// Function to track progress % or active run time
+// track progress % or active run time
 func trackProg (){
 }
 
-func main() {
-    runCommand(currentFunction(), "ping", "-c1", "google.commm")
+// Pause scripts
+func pauseScript() bool {
+	fmt.Println("Script paused. Do you want to continue? (y/n)")
+
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	response := scanner.Text()
+
+	switch response {
+	case "y", "Y":
+		return true
+	case "n", "N":
+		fmt.Println("Make necessary adjustments to the file and type 'c' to continue.")
+		scanner.Scan()
+		continueResponse := scanner.Text()
+		return continueResponse == "c" || continueResponse == "C"
+	default:
+		fmt.Println("Invalid response. Please type 'y' to continue or 'n' to make adjustments.")
+		return pauseScript()
+	}
 }
 
-// Function to pause script
-func pauseScript () {
-    // Have script pause and have us check if all URLs are in target. y/n. If bad urls remove the bad URLs from the file and then continue.
-}
-
-////////////////////
-//Calling Commands//
-////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Commands 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Whoxyrm
+// findomain
+// assetfinder
+// nmap
+// masscan
+// httpx
+// cewl
+// fuff or similar
 
 func commandErrorMessage(stderr bytes.Buffer, program string) string {
     message := string(stderr.Bytes())
